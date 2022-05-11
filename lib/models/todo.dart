@@ -6,7 +6,7 @@ class Todo extends Equatable {
   final String title;
   final String description;
   bool isDone;
-  Todo._edit({
+  Todo._withId({
     required this.id,
     required this.title,
     required this.description,
@@ -19,7 +19,7 @@ class Todo extends Equatable {
   }) : id = const Uuid().v4();
 
   Todo copyWithId({String? title, String? description, bool? isDone}) {
-    return Todo._edit(
+    return Todo._withId(
       id: id,
       title: title ?? this.title,
       description: description ?? this.description,
@@ -29,4 +29,15 @@ class Todo extends Equatable {
 
   @override
   List<Object?> get props => [id];
+
+  factory Todo.fromJson(Map<String, dynamic> json) {
+    return Todo._withId(
+        title: json['title'],
+        isDone: json['isDone'],
+        description: json['description'],
+        id: json['id']);
+  }
+
+  Map<String, dynamic> toJson() =>
+      {'title': title, 'description': description, 'isDone': isDone, 'id': id};
 }
